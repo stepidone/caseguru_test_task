@@ -10,6 +10,7 @@ export default <Provider>{
   useFactory: async (configService: ConfigService) => {
     const options = configService.get(ConfigEnum.DATABASE);
     const dataSource = new DataSource({
+      type: 'postgres',
       ...options,
       entities: [__dirname + '/../**/*.entity{.ts,.js}'],
       synchronize: true,

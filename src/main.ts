@@ -23,6 +23,6 @@ async function bootstrap() {
 
   const configService = app.get(ConfigService);
   const serverConfig = configService.get(ConfigEnum.SERVER);
-  await app.listen(serverConfig.port);
+  await app.listen(serverConfig.port, serverConfig.host);
 }
 bootstrap();
