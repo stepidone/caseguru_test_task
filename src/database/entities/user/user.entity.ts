@@ -16,6 +16,7 @@ export class UserEntity {
     type: 'varchar',
     length: 255,
     nullable: false,
+    unique: true,
   })
   login: string;
 

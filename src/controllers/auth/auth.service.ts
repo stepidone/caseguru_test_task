@@ -4,7 +4,7 @@ import {
   NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
-import { SignInDto, SignUpDto } from './auth.dto';
+import { AuthResponseDto, SignInDto, SignUpDto } from './auth.dto';
 import { UserEntityService } from 'src/database/entities/user/user.service';
 import { CryptoService } from 'src/utils/crypto/crypto.service';
 
@@ -15,7 +15,7 @@ export class AuthService {
     private cryptoService: CryptoService,
   ) {}
 
-  async signUp(data: SignUpDto) {
+  async signUp(data: SignUpDto): Promise<AuthResponseDto> {
     const { login, password, fio } = data;
     const user = await this.userEntityService.getByLogin(login);
     if (user) throw new ForbiddenException('Login is already taken');
@@ -36,7 +36,7 @@ export class AuthService {
     };
   }
 
-  async signIn(data: SignInDto) {
+  async signIn(data: SignInDto): Promise<AuthResponseDto> {
     const { login, password } = data;
     const user = await this.userEntityService.getByLogin(login);
     if (!user) throw new NotFoundException('User not found');

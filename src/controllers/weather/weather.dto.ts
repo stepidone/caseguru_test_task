@@ -1,10 +1,39 @@
-export type GetCurrentWeatherDto = {
-  apiToken: string;
-  city: string;
-  language?: 'ru';
-};
+import { ApiProperty } from '@nestjs/swagger';
+import {
+  Equals,
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+  IsUUID,
+} from 'class-validator';
+import { apiTokenPropertyConfig } from '../auth/auth.dto';
 
-export type GetCurrentJSONResponse = {
+export class GetCurrentWeatherDto {
+  @IsNotEmpty()
+  @IsUUID()
+  @ApiProperty(apiTokenPropertyConfig)
+  apiToken: string;
+
+  @IsNotEmpty()
+  @IsString()
+  @ApiProperty({
+    required: true,
+    type: 'string',
+    description: 'Name of the city',
+  })
+  city: string;
+
+  @IsOptional()
+  @Equals('ru')
+  @ApiProperty({
+    required: false,
+    enum: ['ru'],
+    description: 'Response language',
+  })
+  language?: 'ru';
+}
+
+export class CurrentWeatherDto {
   location: {
     name: string;
     region: string;
@@ -44,4 +73,4 @@ export type GetCurrentJSONResponse = {
     gust_mph: number;
     gust_kph: number;
   };
-};
+}

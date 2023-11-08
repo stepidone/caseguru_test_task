@@ -4,7 +4,7 @@ import {
   HttpStatus,
   Injectable,
 } from '@nestjs/common';
-import { GetCurrentJSONResponse, GetCurrentWeatherDto } from './weather.dto';
+import { CurrentWeatherDto, GetCurrentWeatherDto } from './weather.dto';
 import { ConfigService } from '@nestjs/config';
 import { ConfigEnum } from 'src/common/config.enum';
 import axios from 'axios';
@@ -28,7 +28,7 @@ export class WeatherService {
 
   private async getCurrent(city: string, language?: string) {
     const url = `${this.baseUrl}/current.json`;
-    return axios.get<GetCurrentJSONResponse>(url, {
+    return axios.get<CurrentWeatherDto>(url, {
       params: {
         key: this.apiKey,
         q: city,
@@ -37,7 +37,9 @@ export class WeatherService {
     });
   }
 
-  public async getCurrentByToken(data: GetCurrentWeatherDto) {
+  public async getCurrentByToken(
+    data: GetCurrentWeatherDto,
+  ): Promise<CurrentWeatherDto> {
     const { apiToken, city, language } = data;
 
     const user = await this.userEntityService.getByToken(apiToken);
